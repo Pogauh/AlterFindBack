@@ -8,16 +8,9 @@ public class UserDto {
     private String nom;
     @Getter
     private String prenom;
+    @Getter
     private String email;
+    @Getter
     private String password;
-
-    // Constructeur par défaut
-    public UserDto() {}
-
-    public String getEmail() {
-        return email;
-    }
-
-
 
 }

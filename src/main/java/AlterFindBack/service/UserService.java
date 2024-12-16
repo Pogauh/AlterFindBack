@@ -5,6 +5,7 @@ import AlterFindBack.entities.User;
 import AlterFindBack.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,38 +14,44 @@ import java.util.List;
 @Transactional
 public class UserService {
     @Autowired
-    private UserRepository UserRepository;
-    @Autowired
     private UserRepository userRepository;
 
-    /*##GET##*/
-    public List<User> findAll(){
-        return UserRepository.findAll();
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    /*##GET-ID##*/
-    public User getUserById(Long id) {
-        return UserRepository.getUserById(id);
-    }
-
-    /*##DELETE##*/
-    public void deleteUser(Long id) {
-        UserRepository.deleteById(id);
-    }
-
-    /*##POST##*/
-    public void saveUser(UserDto userDto) {
-        // Vérification si l'e-mail existe déjà
+    public void registerNewUserAccount(UserDto userDto) {
+        // Vérifier si l'email existe déjà
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new IllegalArgumentException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
         }
+
+        // Créer un nouvel utilisateur
+        User user = new User();
+        user.setNom(userDto.getNom());
+        user.setPrenom(userDto.getPrenom());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        // Sauvegarder l'utilisateur en base
+        userRepository.save(user);
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id));
+    }
 
-    /*##PATCH##*/
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
-
-
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id);
+        }
+        userRepository.deleteById(id);
+    }
 }
+
 
 
