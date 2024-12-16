@@ -1,5 +1,6 @@
 package AlterFindBack.service;
 
+import AlterFindBack.controller.dto.UserDto;
 import AlterFindBack.entities.User;
 import AlterFindBack.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -13,46 +14,37 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository UserRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    @Override
-    public User registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
-        if (emailExists(userDto.getEmail())) {
-            throw new UserAlreadyExistException("There is an account with that email address: "
-                    + userDto.getEmail());
-        }
-
-        User user = new User();
-        user.setPrenom(user.getPrenom());
-        user.setNom(user.getNom());
-        user.setPassword(user.getPassword());
-        user.setEmail(user.getEmail());
-        return UserRepository.save(user);
-    }
-
-    private boolean emailExists(String email) {
-        return UserRepository.findByEmail(email) != null;
-    }
-
-    public User getById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id is null");
-        }
-        return UserRepository.getReferenceById(id);
-    }
-
+    /*##GET##*/
     public List<User> findAll(){
         return UserRepository.findAll();
     }
-    public User saveUser(User user) {
-        if (user == null) {
-            throw new IllegalArgumentException("User is null");
-        }
-        return UserRepository.save(user);
 
+    /*##GET-ID##*/
+    public User getUserById(Long id) {
+        return UserRepository.getUserById(id);
     }
+
+    /*##DELETE##*/
     public void deleteUser(Long id) {
         UserRepository.deleteById(id);
     }
+
+    /*##POST##*/
+    public void saveUser(UserDto userDto) {
+        // Vérification si l'e-mail existe déjà
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new IllegalArgumentException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
+        }
+    }
+
+
+    /*##PATCH##*/
+
+
+
 }
 
 
