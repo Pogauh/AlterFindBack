@@ -9,8 +9,11 @@ public class UserDto {
     @Getter
     private String prenom;
     @Getter
+    private String username;
+    @Getter
     private String email;
     @Getter
     private String password;
+
 
 }

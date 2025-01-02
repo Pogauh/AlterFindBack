@@ -1,6 +1,7 @@
 package AlterFindBack.service;
 
 import AlterFindBack.controller.dto.UserDto;
+import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
 import AlterFindBack.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -22,13 +23,14 @@ public class UserService {
     public void registerNewUserAccount(UserDto userDto) {
         // Vérifier si l'email existe déjà
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
+            throw new EmailAlreadyExistsException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
         }
 
         // Créer un nouvel utilisateur
         User user = new User();
         user.setNom(userDto.getNom());
         user.setPrenom(userDto.getPrenom());
+        user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 

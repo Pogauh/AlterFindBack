@@ -2,15 +2,15 @@ package AlterFindBack.controller;
 
 
 import AlterFindBack.controller.dto.UserDto;
+import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
-import AlterFindBack.repositories.UserRepository;
 import AlterFindBack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,8 +39,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
-        userService.registerNewUserAccount(userDto);
-        return ResponseEntity.ok("Utilisateur enregistré avec succès !");
+        try {
+            userService.registerNewUserAccount(userDto);
+            return ResponseEntity.ok("Utilisateur enregistré avec succès !");
+        } catch (EmailAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 }
 
