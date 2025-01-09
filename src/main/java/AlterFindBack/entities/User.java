@@ -19,11 +19,7 @@ public class User {
     private Long id;
 
     private String nom;
-    private String prenom;
-    private String username;
     private String email;
-    private Integer age;
-    private String role;
     private String password;
 
 

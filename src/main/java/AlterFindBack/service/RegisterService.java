@@ -4,7 +4,6 @@ import AlterFindBack.controller.dto.SignupResponse;
 import AlterFindBack.controller.dto.UserDto;
 import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
-import AlterFindBack.repositories.LoginRepository;
 import AlterFindBack.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +14,13 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserService {
+public class RegisterService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
-    public Long validateCredentials(String email, String password) {
-        // Rechercher l'utilisateur par email
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
-
-        // Comparer le mot de passe fourni avec le mot de passe stocké
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Mot de passe incorrect.");
-        }
-
-        // Retourner l'ID de l'utilisateur si les informations sont valides
-        return user.getId();
-    }
 
     public SignupResponse registerNewUserAccount(UserDto userDto) {
         // Vérifier si l'email existe déjà
@@ -57,25 +42,6 @@ public class UserService {
 
         return response;
     }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id));
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id);
-        }
-        userRepository.deleteById(id);
-    }
-
-
-
 
 
     /*
