@@ -19,15 +19,21 @@ public class LoginService {
     @Autowired
     private LoginRepository loginRepository;
 
-    public String doLogin(LoginRequest request) {
-        Optional<UserDto> users = loginRepository.findByEmail(request.getEmail());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-        if (users.isPresent()) {
-            return "User details found";
+    public Long doLogin(LoginRequest request) {
+        Optional<UserDto> userOptional = loginRepository.findByEmail(request.getEmail());
+
+        if (userOptional.isPresent()) {
+            UserDto user = userOptional.get();
+            if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                // Authentification réussie, retourner l'ID de l'utilisateur
+                return user.getId();
+            }
         }
-        return "User details not found";
+        // Authentification échouée, retourner null
+        return null;
     }
-
-
 
 }

@@ -23,39 +23,24 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public Long validateCredentials(String email, String password) {
-        // Rechercher l'utilisateur par email
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'email : " + email));
 
-        // Comparer le mot de passe fourni avec le mot de passe stocké
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Mot de passe incorrect.");
-        }
-
-        // Retourner l'ID de l'utilisateur si les informations sont valides
-        return user.getId();
-    }
-
-    public SignupResponse registerNewUserAccount(UserDto userDto) {
+    public Long registerNewUserAccount(UserDto userDto) {
         // Vérifier si l'email existe déjà
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new EmailAlreadyExistsException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
         }
-        SignupResponse response = new SignupResponse();
-
 
         // Créer un nouvel utilisateur
         User user = new User();
         user.setNom(userDto.getNom());
+        user.setNom(userDto.getPrenom());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         // Sauvegarder l'utilisateur en base
         userRepository.save(user);
-        response.setResponse("User created with id " + user.getId());
 
-        return response;
+        return user.getId();
     }
 
     public User getUserById(Long id) {
@@ -73,37 +58,6 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
-
-
-
-
-
-    /*
-    v0.1
-    public SignupResponse doRegister(SignupRequest request) {
-        Optional<UserDto> users = loginRepository.findByEmail(request.getUsername());
-
-        SignupResponse response = new SignupResponse();
-
-        if (users.isPresent()) {
-            response.setResponse("User details Already found");
-            return response;
-        }
-
-        UserDto user = new UserDto();
-        user.setNom(request.getNom());
-        user.setPrenom(request.getPrenom());
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getAddress());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        loginRepository.save(user);
-
-        response.setResponse("User created with id " + user.getId());
-
-        return response;
-    }
-    */
 }
 
 

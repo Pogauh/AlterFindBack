@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class SignupResponse {
 
-    private String response;
+    private Long userId;
+
+
 
 }
