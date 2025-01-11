@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 import AlterFindBack.controller.dto.LoginRequest;
-import AlterFindBack.controller.dto.SignupRequest;
-import AlterFindBack.controller.dto.SignupResponse;
+
 import AlterFindBack.controller.dto.UserDto;
 import AlterFindBack.repositories.LoginRepository;
 
@@ -32,7 +31,6 @@ public class LoginService {
                 return user.getId();
             }
         }
-        // Authentification échouée, retourner null
         return null;
     }
 

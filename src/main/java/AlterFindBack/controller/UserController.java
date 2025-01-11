@@ -8,7 +8,7 @@ import AlterFindBack.controller.dto.UserDto;
 import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
 import AlterFindBack.service.UserService;
-import AlterFindBack.service.AuthService;
+import AlterFindBack.service.RegisterService;
 import AlterFindBack.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,10 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegisterService RegisterService;
+
 
     @Autowired
     private LoginService LoginService;
@@ -49,7 +53,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<SignupResponse> registerUser(@RequestBody UserDto userDto) {
         try {
-            Long userId = userService.registerNewUserAccount(userDto);
+            Long userId = RegisterService.registerNewUserAccount(userDto);
             SignupResponse response = new SignupResponse();
             response.setUserId(userId);
             return ResponseEntity.status(HttpStatus.OK).body(response);

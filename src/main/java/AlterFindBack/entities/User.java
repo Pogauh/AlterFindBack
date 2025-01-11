@@ -19,11 +19,14 @@ public class User {
     private Long id;
 
     private String nom;
+    private String prenom;
+    private String age;
+    private String adresse;
+    private String ville;
+    private String pays;
+    private Integer codePostal;
     private String email;
+    private String telephone;
     private String password;
-
-
-
-
 }
 

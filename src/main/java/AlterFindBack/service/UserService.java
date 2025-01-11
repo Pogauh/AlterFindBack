@@ -19,30 +19,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-
-
-    public Long registerNewUserAccount(UserDto userDto) {
-        // Vérifier si l'email existe déjà
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new EmailAlreadyExistsException("Un compte avec cet e-mail existe déjà : " + userDto.getEmail());
-        }
-
-        // Créer un nouvel utilisateur
-        User user = new User();
-        user.setNom(userDto.getNom());
-        user.setNom(userDto.getPrenom());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        // Sauvegarder l'utilisateur en base
-        userRepository.save(user);
-
-        return user.getId();
-    }
-
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id : " + id));
