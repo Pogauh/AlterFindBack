@@ -1,11 +1,9 @@
 package AlterFindBack.controller.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import AlterFindBack.entities.CandidateDetails;
+import AlterFindBack.entities.Entreprise;
+import AlterFindBack.entities.UserType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,5 +25,14 @@ public class UserDto {
     private String email;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CandidateDetails candidateDetails;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Entreprise entreprise;
 
 }

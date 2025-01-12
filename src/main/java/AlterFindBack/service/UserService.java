@@ -2,6 +2,7 @@ package AlterFindBack.service;
 
 import AlterFindBack.controller.dto.SignupResponse;
 import AlterFindBack.controller.dto.UserDto;
+import AlterFindBack.entities.CandidateDetails;
 import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
 import AlterFindBack.repositories.LoginRepository;
@@ -34,6 +35,7 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
 }
 
 

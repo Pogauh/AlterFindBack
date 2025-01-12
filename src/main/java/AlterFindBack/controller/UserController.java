@@ -62,7 +62,6 @@ public class UserController {
         }
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> doLogin(@RequestBody LoginRequest request) {
         Long userId = LoginService.doLogin(request);
@@ -78,6 +77,21 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+
+
+
+
+//    @GetMapping("/candidatures")
+//    public ResponseEntity<?> getCandidatures(@RequestHeader("Authorization") Long userId) {
+//        User user = userService.getUserById(userId);
+//
+//        if (user.getUserType() == UserType.CANDIDATE) {
+//            return ResponseEntity.ok(candidatureService.findByCandidateId(userId));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+//        }
+//    }
 
 
 
