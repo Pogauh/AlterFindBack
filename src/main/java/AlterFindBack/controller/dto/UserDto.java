@@ -1,8 +1,5 @@
 package AlterFindBack.controller.dto;
 
-import AlterFindBack.entities.CandidateDetails;
-import AlterFindBack.entities.Entreprise;
-import AlterFindBack.entities.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,13 +23,7 @@ public class UserDto {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
+//    private UserType userType;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CandidateDetails candidateDetails;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Entreprise entreprise;
 
 }

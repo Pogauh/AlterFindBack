@@ -21,7 +21,7 @@ public class Entreprise {
     private String code_postal;
     private String pays;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }

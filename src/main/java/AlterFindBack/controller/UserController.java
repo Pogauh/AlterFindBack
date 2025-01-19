@@ -7,9 +7,9 @@ import AlterFindBack.controller.dto.SignupResponse;
 import AlterFindBack.controller.dto.UserDto;
 import AlterFindBack.entities.EmailAlreadyExistsException;
 import AlterFindBack.entities.User;
-import AlterFindBack.service.UserService;
-import AlterFindBack.service.RegisterService;
 import AlterFindBack.service.LoginService;
+import AlterFindBack.service.RegisterService;
+import AlterFindBack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,6 @@ public class UserController {
 
     @Autowired
     private RegisterService RegisterService;
-
 
     @Autowired
     private LoginService LoginService;
@@ -77,23 +76,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
-
-
-
-
-//    @GetMapping("/candidatures")
-//    public ResponseEntity<?> getCandidatures(@RequestHeader("Authorization") Long userId) {
-//        User user = userService.getUserById(userId);
-//
-//        if (user.getUserType() == UserType.CANDIDATE) {
-//            return ResponseEntity.ok(candidatureService.findByCandidateId(userId));
-//        } else {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
-//        }
-//    }
-
-
 
 
 }

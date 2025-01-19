@@ -1,7 +1,5 @@
 package AlterFindBack.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,16 +23,13 @@ public class User {
     private String email;
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private CandidateDetails candidateDetails;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Entreprise entreprise;
-
+//    @Enumerated(EnumType.STRING)
+//    private UserType userType;
+//
+//    @JsonManagedReference // Sérialisation de la partie "parent" de la relation
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private CandidateDetails candidateDetails;
+//
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Entreprise entreprise;
 }
-
