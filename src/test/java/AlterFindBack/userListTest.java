@@ -1,4 +1,7 @@
 package AlterFindBack;
 
-public class userListTest {
+import org.junit.jupiter.api.Test;
+
+@Test
+void userLitTest() {
 }
