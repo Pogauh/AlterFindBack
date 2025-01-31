@@ -1,8 +1,13 @@
 package AlterFindBack.service;
 
 import AlterFindBack.controller.dto.UserDto;
+import AlterFindBack.entities.CandidateDetails;
+import AlterFindBack.entities.Entreprise;
 import AlterFindBack.entities.User;
+import AlterFindBack.entities.Type;
 import AlterFindBack.repositories.UserRepository;
+import AlterFindBack.repositories.EntrepriseRepository;
+import AlterFindBack.repositories.CandidateDetailsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +20,12 @@ public class RegisterService {
     private UserRepository userRepository;
 
     @Autowired
+    private EntrepriseRepository entrepriseRepository;
+
+    @Autowired
+    private CandidateDetailsRepository candidateDetailsRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
@@ -24,19 +35,19 @@ public class RegisterService {
         user.setPrenom(userDto.getPrenom());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        user.setUserType(userDto.getUserType());
+        user.setType(userDto.getType());
 
         userRepository.save(user);
 
-//        if (userDto.getUserType() == UserType.CANDIDATE) {
-//            CandidateDetails candidateDetails = new CandidateDetails();
-//            candidateDetails.setUser(user);
-//            CandidateDetailsRepository.save(candidateDetails);
-//        } else if (userDto.getUserType() == UserType.COMPANY) {
-//            Entreprise Entreprise = new Entreprise();
-//            Entreprise.setUser(user);
-//            EntrepriseRepository.save(Entreprise);
-//        }
+        if (userDto.getType() == Type.CANDIDATE) {
+            CandidateDetails candidateDetails = new CandidateDetails();
+            candidateDetails.setUser(user);
+            candidateDetailsRepository.save(candidateDetails);
+        } else if (userDto.getType() == Type.COMPANY) {
+            Entreprise Entreprise = new Entreprise();
+            Entreprise.setUser(user);
+            entrepriseRepository.save(Entreprise);
+        }
         return user.getId();
     }
 

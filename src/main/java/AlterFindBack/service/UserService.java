@@ -14,11 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @Transactional
+@Service
 public class UserService {
+
     @Autowired
-    private UserRepository userRepository;
+    public UserRepository userRepository;
 
     public User getUserById(Long id) {
         return userRepository.findById(id)

@@ -15,7 +15,7 @@ public class CandidateDetails {
     private Long id;
 
 //    @JsonBackReference // Évite la sérialisation infinie sur le côté "back" de la relation
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

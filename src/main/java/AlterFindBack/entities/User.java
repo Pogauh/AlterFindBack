@@ -23,13 +23,10 @@ public class User {
     private String email;
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private UserType userType;
-//
-//    @JsonManagedReference // Sérialisation de la partie "parent" de la relation
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private CandidateDetails candidateDetails;
-//
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Entreprise entreprise;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+
+
 }
