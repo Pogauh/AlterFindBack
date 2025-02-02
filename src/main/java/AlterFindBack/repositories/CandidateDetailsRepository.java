@@ -5,5 +5,6 @@ import AlterFindBack.entities.CandidateDetails;
 
 
 public interface CandidateDetailsRepository extends JpaRepository<CandidateDetails, Long> {
+    CandidateDetails findByUserId(Long userId);
 
 }

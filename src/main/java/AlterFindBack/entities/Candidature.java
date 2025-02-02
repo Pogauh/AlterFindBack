@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "candidature")  // Vous pouvez spécifier le nom de la table si vous le souhaitez
+@Table(name = "candidatures")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,17 +18,15 @@ public class Candidature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "candidat_id")  // Clé étrangère vers l'entité Candidat
-//    private CandidateDetails candidat;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "annonce_id")  // Clé étrangère vers l'entité Annonce
-//    private Annonce annonce;
+    @ManyToOne
+    @JoinColumn(name = "id_candidate_details")
+    private CandidateDetails candidat;
 
-    @Column(name = "date_postulation")
-    private String datePostulation; // Date de postulation, vous pouvez aussi utiliser un type `Date` ou `LocalDate`
+    @ManyToOne
+    @JoinColumn(name = "id_annonce")
+    private Annonce annonce;
 
-    // Autres attributs (par exemple, statut de la candidature, message du candidat, etc.)
+    private String lettreMotivation;
+
 
 }

@@ -1,12 +1,12 @@
 package AlterFindBack.service;
 
-import AlterFindBack.entities.Annonce;
-import AlterFindBack.entities.Entreprise;
-import AlterFindBack.entities.User;
-import AlterFindBack.repositories.AnnonceRepository;
-import AlterFindBack.repositories.EntrepriseRepository;
-import AlterFindBack.repositories.UserRepository;
-import AlterFindBack.entities.Type;
+import AlterFindBack.controller.dto.AnnonceDto;
+import AlterFindBack.controller.dto.CandidatureDto;
+import AlterFindBack.entities.*;
+import AlterFindBack.entities.Candidature;
+
+
+import AlterFindBack.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,13 @@ public class AnnonceService {
     public UserRepository userRepository;
 
     @Autowired
+    public CandidaturesRepository candidaturesRepository;
+
+    @Autowired
     public EntrepriseRepository entrepriseRepository;
+    @Autowired
+    private CandidateDetailsRepository candidateDetailsRepository;
+
 
     // Récupérer toutes les annonces
     public List<Annonce> getAllAnnonces() {
@@ -37,9 +43,22 @@ public class AnnonceService {
     }
 
     // Créer une annonce
-    public Annonce createAnnonce(Annonce annonce) {
+    public Annonce createAnnonce(AnnonceDto annonceDto) {
+
+        Entreprise entreprise = entrepriseRepository.findById(annonceDto.getCompany_id())
+                .orElseThrow(() -> new IllegalArgumentException("Entreprise non trouvée avec l'ID : " + annonceDto.getCompany_id()));
+
+        Annonce annonce = new Annonce();
+        annonce.setTitre(annonceDto.getTitre());
+        annonce.setDescription(annonceDto.getDescription());
+        annonce.setLocalisation(annonceDto.getLocalisation());
+        annonce.setSalaire(annonceDto.getSalaire());
+        annonce.setEntreprise(entreprise);
+
+
         return annonceRepository.save(annonce);
     }
+
 
     // Mettre à jour une annonce
     public Annonce updateAnnonce(Long id, Annonce annonce) {
@@ -69,5 +88,27 @@ public class AnnonceService {
             throw new RuntimeException("User is not a company");
         }
     }
+
+    public void postulerOffre(CandidatureDto candidatureDto) {
+        if (candidatureDto.getAnnonce_id() == null || candidatureDto.getCandidate_id() == null) {
+            throw new IllegalArgumentException("L'ID de l'annonce et du candidat ne peuvent pas être null");
+        }
+
+        Candidature candidature = new Candidature();
+        candidature.setLettreMotivation(candidatureDto.getLettreMotivation());
+
+        Annonce annonce = annonceRepository.findById(candidatureDto.getAnnonce_id())
+                .orElseThrow(() -> new RuntimeException("Annonce non trouvée"));
+
+        CandidateDetails candidat = candidateDetailsRepository.findById(candidatureDto.getCandidate_id())
+                .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
+
+        candidature.setAnnonce(annonce);
+        candidature.setCandidat(candidat);
+
+        candidaturesRepository.save(candidature);
+    }
+
+
 
 }

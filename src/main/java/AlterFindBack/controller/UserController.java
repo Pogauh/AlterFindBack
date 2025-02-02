@@ -43,6 +43,23 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
+    //---------- Get avec UserId return id candidat/entreprise ----------
+    @GetMapping("/{userId}/entrepriseId")
+    public ResponseEntity<Long> getEntrepriseId(@PathVariable Long userId) {
+        Long entrepriseId = userService.getEntrepriseIdByUserId(userId);
+        return (entrepriseId != null) ? ResponseEntity.ok(entrepriseId) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{userId}/candidatId")
+    public ResponseEntity<Long> getCandidatId(@PathVariable Long userId) {
+        Long candidatId = userService.getCandidatIdByUserId(userId);
+        return (candidatId != null) ? ResponseEntity.ok(candidatId) : ResponseEntity.notFound().build();
+    }
+
+//-------------------------------------------------------------------------
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
